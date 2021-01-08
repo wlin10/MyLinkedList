@@ -59,7 +59,14 @@ public class MyLinkedList{
    return ans.getData();
  }
  public String set(int index, String value) {
-   return "";
+   if (index < 0 || index >= size()) {
+     throw new IndexOutOfBoundsException("index " + index + " is out of range");
+   }
+   Node another = new Node(value);
+   Node replaced = new Node(get(index));
+   another.setPrev(replaced.getPrev());
+   another.setNext(replaced.getNext());
+   return (replaced.getData());
  }
  public String toString() {
    String ans = "[";
