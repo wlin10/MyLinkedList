@@ -9,17 +9,42 @@ public class MyLinkedList{
  }
  public boolean add(String value) {
    Node another = new Node(value);
-   end.setNext(another);
-   this.size += 1;
+   if (size() == 0) {
+     start = another;
+     end = another;
+   } else {
+     another.setPrev(end);
+     end.setNext(another);
+     end = another;
+   }
+   size++;
    return true;
 }
  public void add(int index, String value) {
-   if (index < 0 || index >= size()) {
+   if (index < 0 || index > size()) {
      throw new IndexOutOfBoundsException("index " + index + " is out of range");
    }
    Node another = new Node(value);
-   end.setNext(another);
-   size += 1;
+   if (size() == 0) {
+     start = another;
+     end = another;
+   } else if (index == 0) {
+     start.setPrev(another);
+     another.setNext(start);
+     start = another;
+   } else if (index == size) {
+     another.setPrev(end);
+     end.setNext(another);
+     end = another;
+   } else {
+     Node temp1 = new Node(get(index - 1));
+     Node temp2 = new Node(get(index));
+     temp1.setNext(another);
+     temp2.setPrev(another);
+     another.setPrev(temp1);
+     another.setNext(temp2);
+   }
+   size++;
  }
  public String get(int index) {
    if (index < 0 || index >= size()) {
