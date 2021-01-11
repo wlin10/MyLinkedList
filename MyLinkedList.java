@@ -77,5 +77,36 @@ public class MyLinkedList{
    }
    return (ans + addition.getData() + "]");
  }
+ public String remove(int index) {
+   if (index < 0 || index >= size()) {
+     throw new IndexOutOfBoundsException("index " + index + " is out of range");
+   }
+   Node removed = new Node(get(index));
+   if (size() == 1) {
+     start = null;
+     end = null;
+   } else if (index == 0) {
+     Node removedRight = new Node(get(index + 1));
+     removedRight.setPrev(null);
+   } else if (index == size - 1) {
+     Node removedLeft = new Node(get(index - 1));
+     removedLeft.setNext(null);
+   } else {
+     Node removedLeft = new Node(get(index - 1));
+     Node removedRight = new Node(get(index + 1));
+     removedLeft.setNext(removedRight);
+     removedRight.setPrev(removedLeft);
+   }
+   return (removed.getData());
+ }
+ /*
+*@postcondition: All of the elements from other are removed from the other, and connected to the end of this linked list.
+*@postcondition: The size of other is reduced to 0.
+*@postcondition: The size of this is now the combined sizes of both original lists
+*/
+public void extend(MyLinkedList other){
+
+}
+
  //Any helper method that returns a Node object MUST BE PRIVATE!
 }
