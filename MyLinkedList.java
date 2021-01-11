@@ -105,7 +105,12 @@ public class MyLinkedList{
 *@postcondition: The size of this is now the combined sizes of both original lists
 */
 public void extend(MyLinkedList other){
-
+    Node ending1 = this.end;
+    Node starting2 = other.start;
+    Node ending2 = other.end;
+    ending1.setNext(starting2);
+    starting2.setPrev(ending1);
+    ending1 = ending2;
 }
 
  //Any helper method that returns a Node object MUST BE PRIVATE!
