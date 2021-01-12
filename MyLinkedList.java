@@ -150,6 +150,7 @@ public void extend(MyLinkedList other){
     this.end.setNext(other.start);
     other.start.setPrev(this.end);
     this.end = other.end;
+    other.size = 0;
 }
 
  //Any helper method that returns a Node object MUST BE PRIVATE!
