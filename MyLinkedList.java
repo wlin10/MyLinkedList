@@ -9,7 +9,7 @@ public class MyLinkedList{
  }
  public boolean add(String value) {
    Node another = new Node(value);
-   if (size() == 0) {
+   if (size == 0) {
      start = another;
      end = another;
    } else {
@@ -21,11 +21,11 @@ public class MyLinkedList{
    return true;
 }
  public void add(int index, String value) {
-   if (index < 0 || index > size()) {
+   if (index < 0 || index > size) {
      throw new IndexOutOfBoundsException("index " + index + " is out of range");
    }
    Node another = new Node(value);
-   if (size() == 0) {
+   if (size == 0) {
      start = another;
      end = another;
    } else if (index == 0) {
@@ -37,29 +37,33 @@ public class MyLinkedList{
      end.setNext(another);
      end = another;
    } else {
-     Node temp1 = new Node(get(index - 1));
-     Node temp2 = new Node(get(index));
-     temp1.setNext(another);
-     temp2.setPrev(another);
-     another.setPrev(temp1);
-     another.setNext(temp2);
+     Node current = start;
+     for (int i = 0; i < size; i++) {
+       if (i == index) {
+         current.getPrev().setNext(another);
+         another.setPrev(current.getPrev());
+         current.setPrev(another);
+         another.setNext(current);
+       }
+       current = current.getNext();
+     }
    }
    size++;
  }
  public String get(int index) {
-   if (index < 0 || index >= size()) {
+   if (index < 0 || index >= size) {
      throw new IndexOutOfBoundsException("index " + index + " is out of range");
    }
    Node ans = start;
    int i = 0;
    while (i != index) {
-       ans = start.getNext();
+       ans = ans.getNext();
        i++;
    }
    return ans.getData();
  }
  public String set(int index, String value) {
-   if (index < 0 || index >= size()) {
+   if (index < 0 || index >= size) {
      throw new IndexOutOfBoundsException("index " + index + " is out of range");
    }
    Node another = new Node(value);
@@ -69,28 +73,37 @@ public class MyLinkedList{
    return (replaced.getData());
  }
  public String toString() {
-   String ans = "[";
    Node addition = start;
-   for (int i = 0; i < size() - 1; i++) {
-     ans += (addition.getData() + ", ");
+   String ans = ("[" + addition.getData());
+   while (addition.getNext() != null) {
      addition = addition.getNext();
+     ans += (", " + addition.getData());
+   }
+   return (ans + "]");
+ }
+ public String toStringReversed() {
+   String ans = "[";
+   Node addition = end;
+   for (int i = size() - 1; i > 0; i--) {
+     Node temp = new Node(get(i));
+     ans += (temp.getData() + ", ");
    }
    return (ans + addition.getData() + "]");
  }
  public String remove(int index) {
-   if (index < 0 || index >= size()) {
+   if (index < 0 || index >= size) {
      throw new IndexOutOfBoundsException("index " + index + " is out of range");
    }
    Node removed = new Node(get(index));
-   if (size() == 1) {
+   if (size == 1) {
      start = null;
      end = null;
    } else if (index == 0) {
-     Node removedRight = new Node(get(index + 1));
-     removedRight.setPrev(null);
+     start = start.getNext();
+     start.setPrev(null);
    } else if (index == size - 1) {
-     Node removedLeft = new Node(get(index - 1));
-     removedLeft.setNext(null);
+     end = end.getPrev();
+     end.setNext(null);
    } else {
      Node removedLeft = new Node(get(index - 1));
      Node removedRight = new Node(get(index + 1));
