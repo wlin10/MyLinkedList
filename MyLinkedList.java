@@ -68,11 +68,32 @@ public class MyLinkedList{
    }
    Node another = new Node(value);
    Node replaced = new Node(get(index));
-   another.setPrev(replaced.getPrev());
-   another.setNext(replaced.getNext());
+   if (index == 0) {
+     start.getNext().setPrev(another);
+     another.setNext(start.getNext());
+     start = another;
+   } else if (index == size - 1) {
+     end.getPrev().setNext(another);
+     another.setPrev(end.getPrev());
+     end = another;
+   } else {
+     Node current = start;
+     for (int i = 0; i < size; i++) {
+       if (i == index) {
+         current.getPrev().setNext(another);
+         another.setPrev(current.getPrev());
+         current.getNext().setPrev(another);
+         another.setNext(current.getNext());
+       }
+       current = current.getNext();
+     }
+   }
    return (replaced.getData());
  }
  public String toString() {
+   if (size == 0) {
+     return ("[]");
+   }
    Node addition = start;
    String ans = ("[" + addition.getData());
    while (addition.getNext() != null) {
@@ -82,13 +103,16 @@ public class MyLinkedList{
    return (ans + "]");
  }
  public String toStringReversed() {
-   String ans = "[";
-   Node addition = end;
-   for (int i = size() - 1; i > 0; i--) {
-     Node temp = new Node(get(i));
-     ans += (temp.getData() + ", ");
+   if (size == 0) {
+     return ("[]");
    }
-   return (ans + addition.getData() + "]");
+   Node addition = end;
+   String ans = ("[" + addition.getData());
+   while (addition.getPrev() != null) {
+     addition = addition.getPrev();
+     ans += (", " + addition.getData());
+   }
+   return (ans + "]");
  }
  public String remove(int index) {
    if (index < 0 || index >= size) {
@@ -105,11 +129,16 @@ public class MyLinkedList{
      end = end.getPrev();
      end.setNext(null);
    } else {
-     Node removedLeft = new Node(get(index - 1));
-     Node removedRight = new Node(get(index + 1));
-     removedLeft.setNext(removedRight);
-     removedRight.setPrev(removedLeft);
+     Node current = start;
+     for (int i = 0; i < size; i++) {
+       if (i == index) {
+         current.getPrev().setNext(current.getNext());
+         current.getNext().setPrev(current.getPrev());
+       }
+       current = current.getNext();
+     }
    }
+   size--;
    return (removed.getData());
  }
  /*
